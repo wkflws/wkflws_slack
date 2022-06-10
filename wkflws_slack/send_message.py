@@ -2,7 +2,7 @@ import json
 from typing import Any, Optional
 
 from slack_sdk.web.async_client import AsyncWebClient
-
+from wkflws.logging import getLogger
 
 from . import __identifier__, __version__
 
@@ -15,6 +15,8 @@ async def send_message(
     # All debugging information MUST be output in stderr. you can just use the logging
     # module or if you are a die hard print debugger use this instead:
     # print(pformat(message), file=sys.stderr)
+    logger = getLogger("wkflws_slack.send_message")
+    logger.setLevel(10)
 
     try:
         api_token = context["Task"]["slack_bot_token"]
@@ -31,10 +33,25 @@ async def send_message(
     except KeyError:
         raise ValueError("'message' missing from Parameters") from None
 
-    client = AsyncWebClient(token=api_token)
-    response = await client.chat_postMessage(channel=channel, text=slack_msg)
+    optional_params = {}
+    if "username" in message:
+        optional_params["username"] = message["username"]
 
-    return json.loads(response.data)  # type:ignore
+    if "icon_emoji" in message:
+        optional_params["icon_emoji"] = message["icon_emoji"]
+
+    if "icon_url" in message:
+        optional_params["icon"] = message["icon_url"]
+
+    client = AsyncWebClient(token=api_token)
+    logger.info(f"Sending message '{slack_msg}' to {channel}")
+    response = await client.chat_postMessage(
+        channel=channel,
+        text=slack_msg,
+        **optional_params,
+    )
+
+    return response.data  # type:ignore # this is a dict
 
 
 if __name__ == "__main__":
@@ -67,4 +84,4 @@ if __name__ == "__main__":
     # The output of your function is input for a potential next state. It must be in
     # JSON format and be the only thing output on stdout. This value is picked up by the
     # executor and processed.
-    print(json.dumps(output["data"]))
+    print(json.dumps(output))
