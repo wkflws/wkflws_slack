@@ -6,6 +6,9 @@ from wkflws.logging import getLogger
 
 from . import __identifier__, __version__
 
+logger = getLogger("wkflws_slack.send_message")
+logger.setLevel(10)
+
 
 async def send_message(
     message: dict[str, Any],
@@ -15,8 +18,6 @@ async def send_message(
     # All debugging information MUST be output in stderr. you can just use the logging
     # module or if you are a die hard print debugger use this instead:
     # print(pformat(message), file=sys.stderr)
-    logger = getLogger("wkflws_slack.send_message")
-    logger.setLevel(10)
 
     try:
         api_token = context["Task"]["slack_bot_token"]
@@ -41,7 +42,7 @@ async def send_message(
         optional_params["icon_emoji"] = message["icon_emoji"]
 
     if "icon_url" in message:
-        optional_params["icon"] = message["icon_url"]
+        optional_params["icon_url"] = message["icon_url"]
 
     client = AsyncWebClient(token=api_token)
     logger.info(f"Sending message '{slack_msg}' to {channel}")
@@ -79,6 +80,7 @@ if __name__ == "__main__":
     # Non-zero exit codes indicate to the executor there was an unrecoverable error and
     # workflow execution should terminate.
     if output is None:
+        logger.error("Received null output.")
         sys.exit(1)
 
     # The output of your function is input for a potential next state. It must be in
