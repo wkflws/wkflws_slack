@@ -1,10 +1,8 @@
 import json
-from typing import Any, Optional
+from typing import Any
 
 from slack_sdk.web.async_client import AsyncWebClient
 from wkflws.logging import getLogger
-
-from . import __identifier__, __version__
 
 logger = getLogger("wkflws_slack.send_message")
 logger.setLevel(10)
