@@ -4,7 +4,7 @@ from typing import Any, Optional
 from wkflws.events import Event
 from wkflws.http import http_method, Request, Response
 from wkflws.logging import getLogger
-from wkflws.triggers.webhook import WebhookTrigger, status
+from wkflws.triggers.webhook import status, WebhookTrigger
 
 from .. import __identifier__, __version__
 
@@ -29,12 +29,13 @@ async def process_webhook_request(
         }
         response.body = data["challenge"]
 
+        logger.info(f'Unique token: {data["token"]}')
+
         return None
 
     metadata = request.headers.copy()
     metadata["webhook_token"] = data["token"]
 
-    print(json.dumps(data))
     identifier = data["event_id"]
 
     logger.info(f"Received Slack webhook request {identifier}")
