@@ -1,12 +1,6 @@
 # wkflws_slack
 This node provides functionality for interacting with Slack instances.
 
-## Node Configuration
-Environment variables can be set to alter functionality.
-
-| name | required | description |
-|-|-|-|
-
 ## Context Properities
 The following context properties are required for this node.
 | name | description |
