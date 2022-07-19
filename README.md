@@ -1,18 +1,12 @@
 # wkflws_slack
 This node provides functionality for interacting with Slack instances as a bot.
 
-## Context Properities
-The following context properties are required for this node.
-| name | description |
-|-|-|
-| `slack_bot_token` | Slack bot token (starts with xoxb-). Obtain from [here](https://api.slack.com/apps). |
-
 ## wkflws_slack.triggers.receive_message
 
 This is a trigger node that processes a message from Slack. To set this up use the
 [Event Subscriptions](https://api.slack.com/apis/connections/events-api) feature of Slack.
 
-## Example Output
+### Example Output
 
 ```json
 {
@@ -68,7 +62,14 @@ This is a trigger node that processes a message from Slack. To set this up use t
 
 This is an action node which sends a message to a Slack channel as a bot user.
 
-## Parameters
+### Context Properities
+The following context properties are required for this node.
+| name | description |
+|-|-|
+| `slack_bot_token` | Slack bot token (starts with xoxb-). Obtain from [here](https://api.slack.com/apps). |
+
+
+### Parameters
 The following parameters are available.
 | name | required | description |
 |-|-|-|
@@ -78,7 +79,7 @@ The following parameters are available.
 | `icon_emoji` | ❌  | An emoji to use as the bot's icon. |
 | `icon_url` | ❌  | URL to an Image to use as the bot's icon. |
 
-## Example Input
+### Example Input
 
 ```json
 {
@@ -87,7 +88,7 @@ The following parameters are available.
 }
 ```
 
-## Example Output
+### Example Output
 ```json
 {
   "ok": true,
