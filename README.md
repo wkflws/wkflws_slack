@@ -1,5 +1,5 @@
 # wkflws_slack
-This node provides functionality for interacting with Slack instances.
+This node provides functionality for interacting with Slack instances as a bot.
 
 ## Context Properities
 The following context properties are required for this node.
