@@ -50,10 +50,14 @@ async def accept_event(event: Event) -> tuple[Optional[str], dict[str, Any]]:
     data = event.data
 
     event_type = data["event"]["type"]
+    subevent_type: Optional[str] = data["event"].get("subtype", None)
 
     logger.info(f"Processing Slack webhook as '{event_type}' event")
     match event_type:
         case "message":
+            if subevent_type == "message_deleted":
+                return None, {}
+
             return "wkflws_slack.triggers.receive_message", data
         case _:
             logger.error(
